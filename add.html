@@ -1,0 +1,28 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=0.8, user-scalable=no">
+  <link rel="stylesheet" href="css/main.css">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
+  <title>Simple Rating - Add</title>
+</head>
+<body>
+  <header class="Header">
+    <a href="/">Back</a>
+  </header>
+  <form method="POST" action="/add" encType="multipart/form-data" class="Add">
+    <div class="Add-head">
+      <input type="text" name="title" required>
+    </div>
+    <div class="Add-body">
+      <p>Click to upload an image</p>
+      <input type="file" name="image" accept="image/*" required>
+    </div>
+    <div class="Add-footer">
+      <input type="submit" value="Add" class="btn btn-send">
+    </div>
+  </form>
+  <script src="jquery/jquery.min.js"></script>
+  <script src="js/add.js"></script>
+</body>
+</html>
