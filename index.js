@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
 })
 
 // Delete a rating
-app.post('/delete/:id', (req, res) => {
+app.delete('/delete/:id', (req, res) => {
   var id = req.params.id
   fs.readFile('ratings.json', (err, file) => {
     var ratings = JSON.parse(file.toString())
