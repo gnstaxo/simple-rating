@@ -1,3 +1,44 @@
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.replace(new RegExp(search, 'g'), replacement);
+}
+
+var mainElement = `<div class="Vote" id="rid">
+  <div class="Vote-head">
+    <button class="btn btn-delete" onclick="deleteRating(rid)">Delete</button>
+    <h1>rtitle</h1>
+  </div>
+  <div class="Vote-body">
+    <img src="rimage">
+  </div>
+  <div class="Vote-footer">
+  <span id="rating-rid">
+    rrating
+    <p>Rating</p>
+  </span>
+    <div id="rateYo-rid"></div>
+    <span id="voters-rid">
+      rvoters
+      <p>Voters</p>
+    </span>
+  </div>
+  <script>
+    $(()=> {
+      $("#rateYo-rid").rateYo({
+        starWidth: "25px",
+        fullStar: true,
+        rating: rrating,
+        normalFill: "#e0e0e0",
+        ratedFill: "#febe12",
+        onSet: function(rating, rateYoInstance){
+          rate(rid, rating)
+        }
+      })
+    })
+  </script>
+</div>
+`
+
 $(()=>{
     function loadRatings() {
         $.ajax({
@@ -7,43 +48,13 @@ $(()=>{
             container.empty()
             ratings.reverse()
             ratings.forEach(xrating => {
-                var newElement = $(`
-                  <div class="Vote" id="${xrating.id}">
-                    <div class="Vote-head">
-                      <button class="btn btn-delete" onclick="deleteRating(${xrating.id})">Delete</button>
-                      <h1>${xrating.title}</h1>
-                    </div>
-                    <div class="Vote-body">
-                      <img src="${xrating.image}">
-                    </div>
-                    <div class="Vote-footer">
-                    <span id="rating-${xrating.id}">
-                      ${xrating.rating}
-                      <p>Rating</p>
-                    </span>
-                      <div id="rateYo-${xrating.id}"></div>
-                      <span id="voters-${xrating.id}">
-                        ${xrating.voters}
-                        <p>Voters</p>
-                      </span>
-                    </div>
-                    <script>
-                      $(()=> {
-                        $("#rateYo-${xrating.id}").rateYo({
-                          starWidth: "25px",
-                          fullStar: true,
-                          rating: ${xrating.rating},
-                          normalFill: "#e0e0e0",
-                          ratedFill: "#febe12",
-                          onSet: function(rating, rateYoInstance){
-                            rate(${xrating.id}, rating)
-                          }
-                        })
-                      })
-                    </script>
-                  </div>
-                  `)
-                newElement.appendTo(container)
+              var newElement = $(mainElement
+                                .replaceAll('rid', xrating.id)
+                                .replaceAll('rrating', xrating.rating)
+                                .replace('rimage', xrating.image)
+                                .replace('rtitle', xrating.title)
+                                .replace('rvoters', xrating.voters))
+              newElement.appendTo(container)
             })
         }).fail(()=>{
             alert('Can not load ratings.')
@@ -65,43 +76,12 @@ function deleteRating(id){
           container.empty()
           ratings.reverse()
           ratings.forEach(xrating => {
-              var newElement = $(`
-                <div class="Vote" id="${xrating.id}">
-                  <div class="Vote-head">
-                    <button class="btn btn-delete" onclick="deleteRating(${xrating.id})">Delete</button>
-                    <h1>${xrating.title}</h1>
-                  </div>
-                  <div class="Vote-body">
-                    <img src="${xrating.image}">
-                  </div>
-                  <div class="Vote-footer">
-                  <span id="rating-${xrating.id}">
-                    ${xrating.rating}
-                    <p>Rating</p>
-                  </span>
-                    <div id="rateYo-${xrating.id}"></div>
-                    <span id="voters-${xrating.id}">
-                      ${xrating.voters}
-                      <p>Voters</p>
-                    </span>
-                  </div>
-                  <script>
-                    $(()=> {
-                      $("#rateYo-${xrating.id}").rateYo({
-                        starWidth: "25px",
-                        fullStar: true,
-                        rating: ${xrating.rating},
-                        normalFill: "#e0e0e0",
-                        ratedFill: "#febe12",
-                        onSet: function(rating, rateYoInstance){
-                          rate(${xrating.id}, rating)
-                        }
-                      })
-                    })
-                  </script>
-                </div>
-
-                `)
+              var newElement = $(mainElement
+                                .replaceAll('rid', xrating.id)
+                                .replaceAll('rrating', xrating.rating)
+                                .replace('rimage', xrating.image)
+                                .replace('rtitle', xrating.title)
+                                .replace('rvoters', xrating.voters))
               newElement.appendTo(container)
           })
       })
