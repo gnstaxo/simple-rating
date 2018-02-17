@@ -29,7 +29,6 @@ $(()=>{
                     </div>
                     <script>
                       $(()=> {
-
                         $("#rateYo-${xrating.id}").rateYo({
                           starWidth: "25px",
                           fullStar: true,
@@ -37,23 +36,12 @@ $(()=>{
                           normalFill: "#e0e0e0",
                           ratedFill: "#febe12",
                           onSet: function(rating, rateYoInstance){
-                            var xhr = new XMLHttpRequest()
-                            xhr.open('POST', '/vote/${xrating.id}', true)
-                            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                            xhr.send('vote='+rating)
-                            xhr.onreadystatechange = function() {
-                              if (this.readyState == 4 && this.status == 200) {
-                                document.getElementById("voters-${xrating.id}").innerHTML = JSON.parse(this.responseText).voters + '<p>Voters</p>';
-                                document.getElementById("rating-${xrating.id}").innerHTML = JSON.parse(this.responseText).rating + '<p>Rating</p>';
-                              }
-                            }
+                            rate(${xrating.id}, rating)
                           }
                         })
                       })
-
                     </script>
                   </div>
-
                   `)
                 newElement.appendTo(container)
             })
@@ -99,7 +87,6 @@ function deleteRating(id){
                   </div>
                   <script>
                     $(()=> {
-
                       $("#rateYo-${xrating.id}").rateYo({
                         starWidth: "25px",
                         fullStar: true,
@@ -107,20 +94,10 @@ function deleteRating(id){
                         normalFill: "#e0e0e0",
                         ratedFill: "#febe12",
                         onSet: function(rating, rateYoInstance){
-                          var xhr = new XMLHttpRequest()
-                          xhr.open('POST', '/vote/${xrating.id}', true)
-                          xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                          xhr.send('vote='+rating)
-                          xhr.onreadystatechange = function() {
-                            if (this.readyState == 4 && this.status == 200) {
-                              document.getElementById("voters-${xrating.id}").innerHTML = JSON.parse(this.responseText).voters + '<p>Voters</p>';
-                              document.getElementById("rating-${xrating.id}").innerHTML = JSON.parse(this.responseText).rating + '<p>Rating</p>';
-                            }
-                          }
+                          rate(${xrating.id}, rating)
                         }
                       })
                     })
-
                   </script>
                 </div>
 
@@ -128,6 +105,19 @@ function deleteRating(id){
               newElement.appendTo(container)
           })
       })
+    }
+  }
+}
+
+function rate(id, rating) {
+  var xhr = new XMLHttpRequest()
+  xhr.open('POST', '/vote/' + id, true)
+  xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+  xhr.send('vote='+rating)
+  xhr.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("voters-" + id).innerHTML = JSON.parse(this.responseText).voters + '<p>Voters</p>';
+      document.getElementById("rating-" + id).innerHTML = JSON.parse(this.responseText).rating + '<p>Rating</p>';
     }
   }
 }
